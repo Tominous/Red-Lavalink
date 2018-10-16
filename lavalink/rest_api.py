@@ -33,6 +33,8 @@ class Track:
         Title of this track.
     uri : str
         The playback url of this track.
+    artwork_uri : Optional[str]
+        The URL of artwork associated with the track, if any.
     """
 
     def __init__(self, data):
@@ -47,12 +49,13 @@ class Track:
         self.position = self._info.get("position")
         self.title = self._info.get("title")
         self.uri = self._info.get("uri")
+        self.artwork_uri = self._info.get("artworkUri")
 
     @property
     def thumbnail(self):
-        """Optional[str]: Returns a thumbnail URL for YouTube tracks."""
-        if "youtube" in self.uri and "identifier" in self._info:
-            return "https://img.youtube.com/vi/{}/mqdefault.jpg".format(self._info["identifier"])
+        """Optional[str]: Returns a thumbnail URL for the track."""
+        warnings.warn("use artwork_uri instead", DeprecationWarning)
+        return self.artwork_uri
 
 
 class RESTClient:
